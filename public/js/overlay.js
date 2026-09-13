@@ -1,0 +1,4 @@
+const fmt = n => Number(n).toLocaleString('en-US');
+function render(stats) { document.querySelectorAll('[data-stat]').forEach(el => { el.textContent = fmt(stats[el.dataset.stat] ?? 0); }); const value = document.querySelector('.value-stat strong'); const digits = String(stats.extractedValue ?? 0).length; value.style.fontSize = digits > 10 ? '16px' : digits > 8 ? '19px' : '22px'; }
+fetch('/api/stats').then(r => r.json()).then(render);
+const events = new EventSource('/api/events'); events.onmessage = e => { const before = document.querySelector('[data-stat="raids"]').textContent; render(JSON.parse(e.data)); if (before !== document.querySelector('[data-stat="raids"]').textContent) document.querySelector('.overlay-panel').classList.add('pulse'); setTimeout(() => document.querySelector('.overlay-panel').classList.remove('pulse'), 400); };

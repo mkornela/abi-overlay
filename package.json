@@ -1,0 +1,9 @@
+{
+  "name": "abi-overlay",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Arena Breakout: Infinite stream statistics overlay",
+  "main": "src/server.js",
+  "scripts": { "start": "node src/server.js", "dev": "node --watch src/server.js" },
+  "dependencies": { "ejs": "^3.1.10", "express": "^4.21.2", "sql.js": "^1.13.0", "winston": "^3.17.0" }
+}
