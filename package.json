@@ -1,9 +1,23 @@
 {
   "name": "abi-overlay",
   "version": "1.0.0",
-  "private": true,
-  "description": "Arena Breakout: Infinite stream statistics overlay",
+  "private": false,
+  "description": "A lightweight Arena Breakout: Infinite raid statistics control dock and OBS overlay.",
+  "keywords": ["arena-breakout-infinite", "obs", "stream-overlay", "twitch", "express", "sqlite"],
+  "author": "mkornela",
+  "license": "MIT",
+  "engines": { "node": ">=20" },
   "main": "src/server.js",
-  "scripts": { "start": "node src/server.js", "dev": "node --watch src/server.js" },
-  "dependencies": { "ejs": "^3.1.10", "express": "^4.21.2", "sql.js": "^1.13.0", "winston": "^3.17.0" }
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "check": "node --check src/server.js && node --check public/js/control.js && node --check public/js/overlay.js"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.7.2",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "sql.js": "^1.13.0",
+    "winston": "^3.17.0"
+  }
 }

@@ -1,72 +1,57 @@
 # ABI Raid Log
 
-A lightweight local control panel and transparent OBS overlay for tracking Arena Breakout: Infinite raid statistics while streaming.
+A lightweight local control dock and transparent OBS overlay for tracking **Arena Breakout: Infinite** raid statistics during a live stream.
 
-The app stores one current session in SQLite and synchronizes the control panel and OBS overlay immediately using Server-Sent Events.
+> Unofficial community utility. This project is not affiliated with or endorsed by MoreFun Studios or Level Infinite.
 
-## Requirements
+![Node.js](https://img.shields.io/badge/Node.js-20%2B-5FA04E?logo=node.js&logoColor=white)
+![License](https://img.shields.io/badge/license-MIT-blue)
+![OBS](https://img.shields.io/badge/OBS-Browser%20Source-302E31?logo=obsstudio&logoColor=white)
 
-- Windows, macOS, or Linux
+## What it does
+
+ABI Raid Log keeps one current streaming session and shows it in two places:
+
+- **Control dock** — quick one-line controls for raids, kills, golds, reds, and extracted Koen.
+- **OBS overlay** — a compact transparent glass panel that updates live without refreshing the browser source.
+
+Session data persists across browser refreshes and application restarts. `RESET SESSION` starts a clean session.
+
+## Quick start
+
+Requirements:
+
 - Node.js 20 or newer
-- OBS Studio, if using the overlay
+- OBS Studio, if you are using the overlay
 
-## Build and install
-
-Clone or download this repository, then open a terminal in the project folder.
-
-Install the dependencies:
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-The project uses:
-
-- Express.js
-- EJS
-- SQLite through `sql.js`
-- Vanilla JavaScript
-- Font Awesome fallback icons
-- Winston logging
-
-No database server or external service is required.
-
-## Run the application
-
-Start the app:
+Start the application:
 
 ```bash
 npm start
 ```
 
-The server runs on port `41773` by default and prints both URLs when it starts:
+The server uses port `41773` by default and prints the links when it starts:
 
 ```text
 Control panel: http://localhost:41773/control
 OBS overlay:   http://localhost:41773/overlay
 ```
 
-Open the control panel in a browser:
+Open the control panel in a browser, or add it to OBS as a dock using the instructions below.
 
-```text
-http://localhost:41773/control
-```
-
-Use the control panel to record extracted raids, failed raids, kills, gold items, red items, and extracted Koen value.
-
-For development, use Node's built-in watcher:
+For development with automatic Node restarts:
 
 ```bash
 npm run dev
 ```
 
-To use a different port:
-
-```bash
-PORT=12345 npm start
-```
-
-On Windows PowerShell:
+To use another port:
 
 ```powershell
 $env:PORT=12345; npm start
@@ -74,136 +59,110 @@ $env:PORT=12345; npm start
 
 ## Add the control panel as an OBS dock
 
-The control panel is separate from the transparent stream overlay. Add it to OBS as a dock so it is available while streaming.
+The control panel is designed to stay inside OBS while streaming.
 
-1. Start the application with `npm start`.
-2. Open OBS Studio.
-3. Open the **Docks** menu.
-4. Choose **Custom Browser Docks**.
-5. Enter any name, for example `ABI Raid Control`.
-6. Enter this URL:
+1. Start ABI Raid Log with `npm start`.
+2. In OBS, open **Docks**.
+3. Choose **Custom Browser Docks**.
+4. Enter a name, such as `ABI Raid Control`.
+5. Enter this URL:
 
    ```text
    http://localhost:41773/control
    ```
 
-7. Click **Apply** or **OK**.
-8. Dock the new panel wherever it is convenient in OBS.
+6. Confirm with **Apply** or **OK**.
+7. Position the dock wherever it is useful in your OBS layout.
 
-The dock updates as soon as a statistic is changed. No refresh is required.
+The dock is intentionally minimal. Add a raid result, then add kills, golds, reds, and value as needed. Changes are sent to the overlay immediately.
 
-## Add the transparent overlay to OBS
+## Add the overlay to OBS
 
-Add the overlay as a Browser Source in the scene that is being streamed.
-
-1. Start the application with `npm start`.
-2. In OBS, select the scene where the overlay should appear.
-3. In the **Sources** panel, click the **+** button.
-4. Choose **Browser**.
-5. Name it something like `ABI Raid Overlay`.
-6. Set the URL to:
+1. Start ABI Raid Log with `npm start`.
+2. Select the scene where the overlay should appear.
+3. In **Sources**, click **+** and choose **Browser**.
+4. Name the source, for example `ABI Raid Overlay`.
+5. Set the URL to:
 
    ```text
    http://localhost:41773/overlay
    ```
 
-7. Set **Width** to:
+6. Set **Width** to `1920`.
+7. Set **Height** to `1080`.
+8. Click **OK** and position the source in the scene.
 
-   ```text
-   1920
-   ```
+The page background is transparent. Only the compact glass statistics panel appears over gameplay. The browser source updates automatically when the control dock is used.
 
-8. Set **Height** to:
+## Portable Windows build
 
-   ```text
-   1080
-   ```
-
-9. Click **OK**.
-10. Position the overlay where it should appear in the scene.
-
-The page background is transparent, so only the glass statistics panel is displayed over the gameplay. The browser source updates automatically when the control dock changes a value.
-
-## Portable Windows package
-
-A portable release folder can be created for a computer that does not have Node.js installed.
-
-Run this from the project folder:
+The repository includes a script for creating a portable application folder:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\build-portable.ps1
 ```
 
-This creates a `release/` folder containing the application, production dependencies, public assets, views, and an empty data folder.
+This creates `release/` with the application code, production dependencies, assets, views, and a data directory.
 
-Download the Windows Node.js **LTS Binary (.zip)** package from:
+To make the package run on a Windows machine without a Node.js installation:
 
-```text
-https://nodejs.org/en/download
-```
+1. Download the Windows **LTS Binary (.zip)** from [nodejs.org](https://nodejs.org/en/download).
+2. Choose the Windows x64 ZIP package, not the MSI installer.
+3. Extract it and copy `node.exe` into:
 
-Choose the Windows x64 ZIP, not the MSI installer. Extract it and copy `node.exe` into:
+   ```text
+   release\node\node.exe
+   ```
 
-```text
-release\node\node.exe
-```
+4. Copy the complete `release/` folder to the target computer.
+5. Double-click:
 
-The final folder should contain:
+   ```text
+   release\start-overlay.bat
+   ```
 
-```text
-release/
-├── node/
-│   └── node.exe
-├── node_modules/
-├── public/
-├── src/
-├── views/
-├── data/
-└── start-overlay.bat
-```
-
-Copy the complete `release/` folder to the target Windows computer. Double-click:
-
-```text
-release\start-overlay.bat
-```
-
-The launcher starts the server and opens the control panel automatically. The OBS overlay URL remains:
+The launcher starts the server and opens the control panel. The OBS URL remains:
 
 ```text
 http://localhost:41773/overlay
 ```
 
-The launcher falls back to a system-installed `node` command if `release\node\node.exe` is not present.
+The launcher falls back to a system-installed `node` command if the bundled runtime is not present.
 
-## Data and logs
-
-Session data is stored locally at:
+## Project structure
 
 ```text
-data/overlay.sqlite
+src/server.js          Express server, API, SSE, SQLite persistence
+views/                 EJS pages and partials
+public/css/app.css     Overlay and control-dock styling
+public/js/             Browser-side API and SSE clients
+public/images/         Local gold, red, Koen, raid, and kill assets
+data/                  Runtime database and logs, ignored by Git
 ```
-
-Application logs are written to:
-
-```text
-data/overlay.log
-```
-
-The `RESET SESSION` button clears all current statistics. It asks for confirmation before deleting the session values.
 
 ## API
 
-```text
-GET  /api/stats
-GET  /api/events
-POST /api/raid
-POST /api/add
-POST /api/reset
-```
+| Method | Endpoint | Purpose |
+| --- | --- | --- |
+| `GET` | `/api/stats` | Read the current session |
+| `GET` | `/api/events` | Subscribe to live session updates via SSE |
+| `POST` | `/api/raid` | Add an extracted or failed raid |
+| `POST` | `/api/add` | Add kills, golds, reds, or extracted value |
+| `POST` | `/api/reset` | Clear the current session |
 
 The API is intended for local use and does not include authentication.
 
+## Persistence and logs
+
+- SQLite database: `data/overlay.sqlite`
+- Application log: `data/overlay.log`
+- Current state: one active session row
+- Currency/value: stored as an integer, never floating point
+
 ## Assets
 
-The overlay uses local assets from `public/images/` for gold, red, Koen, raids, and kills. Font Awesome is used only where a suitable local icon is not available. No unreliable third-party game asset URLs are required.
+Game-related local assets are kept in `public/images/` where available. Font Awesome is used only as a fallback for icons without a supplied local asset. The project does not depend on remote image URLs.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
