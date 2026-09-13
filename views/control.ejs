@@ -1,15 +1,51 @@
 <!doctype html>
-<html lang="en"><head><%- include('partials/head', { title: 'Session control' }) %></head>
-<body class="control-page">
-  <main class="control-shell control-minimal">
-    <div class="control-list" aria-label="Session controls">
-      <div class="control-row raid-row"><span class="control-label">Raid</span><button class="add-button raid-button extracted" data-raid="extracted">+ Extracted</button><button class="add-button raid-button failed" data-raid="failed">+ Failed</button></div>
-      <div class="control-row"><label class="control-label" for="kills">Kills</label><input id="kills" data-field="kills" type="number" min="0" step="1" inputmode="numeric" placeholder="0"><button class="add-button" data-add="kills">Add</button></div>
-      <div class="control-row"><label class="control-label" for="gold">Golds</label><input id="gold" data-field="gold" type="number" min="0" step="1" inputmode="numeric" placeholder="0"><button class="add-button" data-add="gold">Add</button></div>
-      <div class="control-row"><label class="control-label" for="red">Reds</label><input id="red" data-field="red" type="number" min="0" step="1" inputmode="numeric" placeholder="0"><button class="add-button" data-add="red">Add</button></div>
-      <div class="control-row"><label class="control-label" for="value">Value</label><span class="currency-prefix">₭</span><input id="value" data-field="extractedValue" type="number" min="0" step="1" inputmode="numeric" placeholder="0"><button class="add-button" data-add="extractedValue">Add</button></div>
-    </div>
-    <button class="reset-button minimal-reset" id="reset">RESET SESSION</button>
-  </main>
-  <div id="toast" role="status"></div><script src="/js/control.js"></script>
-</body></html>
+<html lang="en">
+  <head>
+    <%- include('partials/head', { title: 'Session control' }) %>
+  </head>
+  <body class="control-page">
+    <main class="control-shell control-minimal">
+      <div class="control-list" aria-label="Session controls">
+        <div class="control-row raid-row">
+          <span class="control-label">Raid</span>
+          <button class="add-button raid-button extracted" data-raid="extracted">
+            + Extracted
+          </button>
+          <button class="add-button raid-button failed" data-raid="failed">
+            + Failed
+          </button>
+        </div>
+
+        <div class="control-row">
+          <label class="control-label" for="kills">Kills</label>
+          <input id="kills" data-field="kills" type="number" min="0" step="1" inputmode="numeric" placeholder="0" />
+          <button class="add-button" data-add="kills">Add</button>
+        </div>
+
+        <div class="control-row">
+          <label class="control-label" for="gold">Golds</label>
+          <input id="gold" data-field="gold" type="number" min="0" step="1" inputmode="numeric" placeholder="0" />
+          <button class="add-button" data-add="gold">Add</button>
+        </div>
+
+        <div class="control-row">
+          <label class="control-label" for="red">Reds</label>
+          <input id="red" data-field="red" type="number" min="0" step="1" inputmode="numeric" placeholder="0" />
+          <button class="add-button" data-add="red">Add</button>
+        </div>
+
+        <div class="control-row">
+          <label class="control-label" for="value">Value</label>
+          <span class="currency-prefix">₭</span>
+          <input id="value" data-field="extractedValue" type="number" min="0" step="1" inputmode="numeric" placeholder="0" />
+          <button class="add-button" data-add="extractedValue">Add</button>
+        </div>
+      </div>
+
+      <button class="reset-button minimal-reset" id="reset">RESET SESSION</button>
+    </main>
+
+    <div id="toast" role="status"></div>
+    <script src="/js/control.js"></script>
+  </body>
+</html>

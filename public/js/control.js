@@ -1,10 +1,82 @@
-const fmt = n => Number(n).toLocaleString('en-US');
-const toast = message => { const el = document.getElementById('toast'); el.textContent = message; el.classList.add('show'); clearTimeout(window.toastTimer); window.toastTimer = setTimeout(() => el.classList.remove('show'), 1800); };
-function render(stats) { document.querySelectorAll('[data-stat]').forEach(el => { const key = el.dataset.stat; el.textContent = fmt(stats[key] ?? 0); }); }
-async function post(url, body) { const res = await fetch(url, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) }); const data = await res.json(); if (!res.ok) throw new Error(data.error || 'Could not update session'); render(data); return data; }
-fetch('/api/stats').then(r => r.json()).then(render);
-const events = new EventSource('/api/events'); events.onmessage = e => render(JSON.parse(e.data));
-document.querySelectorAll('[data-raid]').forEach(button => button.addEventListener('click', async () => { button.disabled = true; try { await post('/api/raid', { type: button.dataset.raid }); toast(button.dataset.raid === 'extracted' ? 'Extraction recorded' : 'Failed raid recorded'); } catch (e) { toast(e.message); } finally { setTimeout(() => button.disabled = false, 260); } }));
-document.querySelectorAll('[data-add]').forEach(button => button.addEventListener('click', async () => { const field = button.dataset.add; const input = document.querySelector(`[data-field="${field}"]`); const value = input.value; if (!/^\d+$/.test(value)) { input.focus(); toast('Enter a whole number'); return; } try { await post('/api/add', { field, value }); input.value = ''; toast(`${field === 'extractedValue' ? 'Value' : field} added`); } catch (e) { toast(e.message); } }));
-document.querySelectorAll('input').forEach(input => input.addEventListener('keydown', e => { if (e.key === 'Enter') input.closest('.control-row').querySelector('.add-button').click(); }));
-document.getElementById('reset').addEventListener('click', async () => { if (!confirm('Reset the entire current session? This cannot be undone.')) return; try { await post('/api/reset', {}); toast('Session reset'); } catch (e) { toast(e.message); } });
+const fmt = (n) => Number(n).toLocaleString("en-US");
+const toast = (message) => {
+  const el = document.getElementById("toast");
+  el.textContent = message;
+  el.classList.add("show");
+  clearTimeout(window.toastTimer);
+  window.toastTimer = setTimeout(() => el.classList.remove("show"), 1800);
+};
+function render(stats) {
+  document.querySelectorAll("[data-stat]").forEach((el) => {
+    const key = el.dataset.stat;
+    el.textContent = fmt(stats[key] ?? 0);
+  });
+}
+async function post(url, body) {
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Could not update session");
+  render(data);
+  return data;
+}
+fetch("/api/stats")
+  .then((r) => r.json())
+  .then(render);
+const events = new EventSource("/api/events");
+events.onmessage = (e) => render(JSON.parse(e.data));
+document.querySelectorAll("[data-raid]").forEach((button) =>
+  button.addEventListener("click", async () => {
+    button.disabled = true;
+    try {
+      await post("/api/raid", { type: button.dataset.raid });
+      toast(
+        button.dataset.raid === "extracted"
+          ? "Extraction recorded"
+          : "Failed raid recorded",
+      );
+    } catch (e) {
+      toast(e.message);
+    } finally {
+      setTimeout(() => (button.disabled = false), 260);
+    }
+  }),
+);
+document.querySelectorAll("[data-add]").forEach((button) =>
+  button.addEventListener("click", async () => {
+    const field = button.dataset.add;
+    const input = document.querySelector(`[data-field="${field}"]`);
+    const value = input.value;
+    if (!/^\d+$/.test(value)) {
+      input.focus();
+      toast("Enter a whole number");
+      return;
+    }
+    try {
+      await post("/api/add", { field, value });
+      input.value = "";
+      toast(`${field === "extractedValue" ? "Value" : field} added`);
+    } catch (e) {
+      toast(e.message);
+    }
+  }),
+);
+document.querySelectorAll("input").forEach((input) =>
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter")
+      input.closest(".control-row").querySelector(".add-button").click();
+  }),
+);
+document.getElementById("reset").addEventListener("click", async () => {
+  if (!confirm("Reset the entire current session? This cannot be undone."))
+    return;
+  try {
+    await post("/api/reset", {});
+    toast("Session reset");
+  } catch (e) {
+    toast(e.message);
+  }
+});

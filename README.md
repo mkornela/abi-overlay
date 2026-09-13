@@ -142,13 +142,13 @@ data/                  Runtime database and logs, ignored by Git
 
 ## API
 
-| Method | Endpoint | Purpose |
-| --- | --- | --- |
-| `GET` | `/api/stats` | Read the current session |
-| `GET` | `/api/events` | Subscribe to live session updates via SSE |
-| `POST` | `/api/raid` | Add an extracted or failed raid |
-| `POST` | `/api/add` | Add kills, golds, reds, or extracted value |
-| `POST` | `/api/reset` | Clear the current session |
+| Method | Endpoint      | Purpose                                    |
+| ------ | ------------- | ------------------------------------------ |
+| `GET`  | `/api/stats`  | Read the current session                   |
+| `GET`  | `/api/events` | Subscribe to live session updates via SSE  |
+| `POST` | `/api/raid`   | Add an extracted or failed raid            |
+| `POST` | `/api/add`    | Add kills, golds, reds, or extracted value |
+| `POST` | `/api/reset`  | Clear the current session                  |
 
 The API is intended for local use and does not include authentication.
 

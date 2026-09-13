@@ -3,10 +3,19 @@
   "version": "1.0.0",
   "private": false,
   "description": "A lightweight Arena Breakout: Infinite raid statistics control dock and OBS overlay.",
-  "keywords": ["arena-breakout-infinite", "obs", "stream-overlay", "twitch", "express", "sqlite"],
+  "keywords": [
+    "arena-breakout-infinite",
+    "obs",
+    "stream-overlay",
+    "twitch",
+    "express",
+    "sqlite"
+  ],
   "author": "mkornela",
   "license": "MIT",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
